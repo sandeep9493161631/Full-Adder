@@ -1,0 +1,145 @@
+Code for Full Adder using Gates:-
+----------------------------------'
+module FullAdderUsingGates(
+    input a,b,cin,
+    output s,cout
+    );
+    wire w1,w2,w3;
+    xor(w1,a,b);
+    and(w2,a,b);
+    xor(s,cin,w1);
+    and(w3,cin,w1);
+    or(cout,w2,w3);
+endmodule
+
+Test Bench:-
+---------------
+module FullAdderUsingGates_tb;
+reg a;
+reg b;
+reg cin;
+wire s,cout;
+FullAdderUsingGates uut(.a(a),.b(b),.cin(cin),.cout(cout),.s(s));
+initial
+    begin
+        a=0;b=0;cin=0;#100;
+        a=0;b=0;cin=1;#100;
+        a=0;b=1;cin=0;#100;
+        a=0;b=1;cin=1;#100;
+        a=1;b=0;cin=0;#100;
+        a=1;b=0;cin=1;#100;
+        a=1;b=1;cin=0;#100;
+        a=1;b=1;cin=1;#100;
+        
+    end
+endmodule
+
+Code for Full Adder Using Half Adder:-
+-------------------------------------------
+module FullAdderUsingHalfAdder(
+    input a,b,cin,
+    output s,c
+    );
+    wire w1,w2,w3;
+    HalfAdder h1 (.a(a),.b(b),.s(w1),.c(w2));
+    HalfAdder h2 (.a(w1),.b(cin),.s(s),.c(w3));
+    OrGate o1(w2,w3,c);
+endmodule
+
+Test Bench:-
+-------------
+module FullAdderUsingHalfAdder_tb;
+reg a,b,cin;
+wire s,c;
+FullAdderUsingHalfAdder uut(.a(a),.b(b),.cin(cin),.s(s),.c(c));
+initial
+    begin
+        a=0;b=0;cin=0;#100;
+        a=0;b=0;cin=1;#100;
+        a=0;b=1;cin=0;#100;
+        a=0;b=1;cin=1;#100;
+        a=1;b=0;cin=0;#100;
+        a=1;b=0;cin=1;#100;
+        a=1;b=1;cin=0;#100;
+        a=1;b=1;cin=1;#100;
+        
+    end
+endmodule
+
+Code for Four Bit Full Adder:-
+------------------------------
+module FourBitFullAdder(
+    input [3:0] a,b,
+    input cin,
+    output [3:0] s,
+    output c
+    );
+    wire w1,w2,w3;
+    FullAdderUsingHalfAdder f1(.a(a[0]),.b(b[0]),.cin(cin),.s(s[0]),.c(w1));
+    FullAdderUsingHalfAdder f2(.a(a[1]),.b(b[1]),.cin(w1),.s(s[1]),.c(w2));
+    FullAdderUsingHalfAdder f3(.a(a[2]),.b(b[2]),.cin(w2),.s(s[2]),.c(w3));
+    FullAdderUsingHalfAdder f4(.a(a[3]),.b(b[3]),.cin(w3),.s(s[3]),.c(c));
+endmodule
+
+Test Bench:-
+------------
+module FourBitFullAdder_tb;
+reg [3:0]a;
+reg [3:0]b;
+reg cin;
+wire [3:0]s;
+wire c;
+FourBitFullAdder uut (.a(a),.b(b),.cin(cin),.s(s),.c(c));
+initial
+    begin
+        a=4'b0000;b=4'b0000;cin=1;#100;
+        a=4'b0001;b=4'b0001;cin=1;#100;
+        a=4'b0010;b=4'b0010;cin=1;#100;
+        a=4'b0011;b=4'b0011;cin=1;#100;
+        a=4'b0100;b=4'b0100;cin=1;#100;
+        a=4'b0101;b=4'b0101;cin=1;#100;
+        a=4'b0110;b=4'b0110;cin=1;#100;
+        a=4'b0111;b=4'b0111;cin=1;#100;
+        a=4'b1000;b=4'b1000;cin=1;#100;
+        a=4'b1001;b=4'b1001;cin=1;#100;
+        a=4'b1010;b=4'b1010;cin=1;#100;
+        a=4'b1011;b=4'b1011;cin=1;#100;
+        a=4'b1100;b=4'b1100;cin=1;#100;
+        a=4'b1101;b=4'b1101;cin=1;#100;
+        a=4'b1110;b=4'b1110;cin=1;#100;
+        a=4'b1111;b=4'b1111;cin=1;#100;        
+    end
+endmodule
+
+Code for 16 Bit Full Adder:-
+-----------------------------
+module SixteenBitFullAdderUsing4BitFullAdder(
+    input [15:0] a,b,
+    input cin,
+    output [15:0] s,
+    output c
+    );
+    wire w1,w2,w3;
+    FourBitFullAdder f4 (.a(a[3:0]),.b(b[3:0]),.cin(cin),.s(s[3:0]),.c(w1));
+    FourBitFullAdder f5 (.a(a[7:4]),.b(b[7:4]),.cin(w1),.s(s[7:4]),.c(w2));
+    FourBitFullAdder f6 (.a(a[11:8]),.b(b[11:8]),.cin(w2),.s(s[11:8]),.c(w3));
+    FourBitFullAdder f7 (.a(a[15:12]),.b(b[15:12]),.cin(w3),.s(s[15:12]),.c(c));
+endmodule
+
+Test Bench:-
+---------------
+module SixteenBitFullAdderUsing4BitFullAdder_tb;
+reg [15:0]a;
+reg [15:0]b;
+reg cin;
+wire [15:0]s;
+wire c;
+SixteenBitFullAdderUsing4BitFullAdder uut (.a(a),.b(b),.cin(cin),.s(s),.c(c));
+initial
+    begin
+        a=5;
+        b=16'b1000110011110000;
+        cin = 1;#100;
+        
+    end
+endmodule
